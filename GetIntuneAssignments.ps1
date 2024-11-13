@@ -1,55 +1,39 @@
 Function Connect-Entra
 
 {
-
- 
-
     try {
-
- 
-
-        # Define required permissions with reasons
+       # Define required permissions with reasons
 
         $requiredPermissions = @(
-
             @{
 
                 Permission = "User.Read.All"
 
                 Reason     = "Required to read user profile information and check group memberships"
-
             },
 
             @{
-
                 Permission = "Group.Read.All"
 
                 Reason     = "Needed to read group information and memberships"
-
             },
 
             @{
-
                 Permission = "DeviceManagementConfiguration.ReadWrite.All"
 
                 Reason     = "Allows reading Intune device configuration policies and their assignments"
-
             },
 
             @{
-
                 Permission = "DeviceManagementApps.ReadWrite.All"
 
                 Reason     = "Necessary to read mobile app management policies and app configurations"
-
             },
 
             @{
-
                 Permission = "DeviceManagementManagedDevices.Read.All"
 
                 Reason     = "Required to read managed device information and compliance policies"
-
             },
 
             @{
@@ -57,13 +41,9 @@ Function Connect-Entra
                 Permission = "Device.Read.All"
 
                 Reason     = "Needed to read device information from Entra ID"
-
             }
-
         )
-
    
-
     # Connect
 
         $permissionsList = ($requiredPermissions | ForEach-Object { $_.Permission }) -join ', '
@@ -89,15 +69,10 @@ Function Connect-Entra
             $permission = $permissionInfo.Permission
 
             $reason = $permissionInfo.Reason
-
-   
-
+            
             # Check if either the exact permission or a "ReadWrite" version of it is granted
 
             $hasPermission = $currentPermissions -contains $permission -or $currentPermissions -contains $permission.Replace(".Read", ".ReadWrite")
-
-   
-
             if ($hasPermission) {
 
                 Write-Host "  [✓] $permission" -ForegroundColor Green
@@ -105,7 +80,6 @@ Function Connect-Entra
                 Write-Host "      Reason: $reason" -ForegroundColor Gray
 
             }
-
             else {
 
                 Write-Host "  [✗] $permission" -ForegroundColor Red
@@ -117,8 +91,6 @@ Function Connect-Entra
             }
 
         }
-
-   
 
         if ($missingPermissions.Count -eq 0) {
 
@@ -163,30 +135,14 @@ Function Connect-Entra
         }
 
     }
-
-   
-
     catch {
 
         Write-Host "Failed to connect to Microsoft Graph. Error: $_" -ForegroundColor Red
-
         exit
-
     }
-
-     
-
- 
-
 }
 
- 
-
 Connect-Entra
-
-
-
-
 function Get-Configurations {
 
     param (
@@ -198,11 +154,7 @@ function Get-Configurations {
         [string]$type
 
     )
-
- 
-
     $response = Invoke-MgGraphRequest -Uri $uri -Method Get
-
     $allItems = @()
 
  
